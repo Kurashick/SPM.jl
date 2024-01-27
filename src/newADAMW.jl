@@ -64,6 +64,28 @@ function apply!(o::WeightDecay, state, x::AbstractArray{T}, dx) where T
 end
 
 
+"""
+    AdamW(η = 0.001, β = (0.9, 0.999), γ = 0, ϵ = 1e-8)
+
+[AdamW](https://arxiv.org/abs/1711.05101) is a variant of Adam fixing (as in repairing) its
+weight decay regularization.
+
+# Parameters
+- Learning rate (`η`): Amount by which gradients are discounted before updating
+                       the weights.
+- Decay of momentums (`β::Tuple`): Exponential decay for the first (β1) and the
+                                   second (β2) momentum estimate.
+- Weight decay (`γ`): Decay applied to weights during optimisation.
+- Machine epsilon (`ϵ`): Constant to prevent division by zero
+                         (no need to change default)
+"""
+AdamW(η = 0.001, β = (0.9, 0.999), γ = 0, ϵ = 1e-8) =
+  OptimiserChain(Adam(η, β, ϵ), WeightDecay(γ))
+
+
+
+
+
 
 
 
